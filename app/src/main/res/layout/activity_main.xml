@@ -15,7 +15,6 @@
         android:background="@drawable/gradient"
         tools:context=".MainActivity">
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvChat"
             android:layout_width="match_parent"

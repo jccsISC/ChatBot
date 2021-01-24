@@ -29,7 +29,6 @@ class ChatAdapter: ListAdapter<MessageModel, ChatAdapter.ChatViewHolder>(DiffCal
         return ChatViewHolder(binding)
     }
 
-
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val messageModel = getItem(position)
         holder.bind(messageModel)
@@ -40,7 +39,7 @@ class ChatAdapter: ListAdapter<MessageModel, ChatAdapter.ChatViewHolder>(DiffCal
             txtMessage.text = messageModel.message
             if (messageModel.id == 0) {
                 txtMessage.setBackgroundResource(R.drawable.background_chat)
-                txtMessage
+                txtMessage.gravity = Gravity.START
             }else {
                 txtMessage.setBackgroundResource(R.drawable.background_chat_bot)
             }
@@ -48,6 +47,3 @@ class ChatAdapter: ListAdapter<MessageModel, ChatAdapter.ChatViewHolder>(DiffCal
         }
     }
 }
-
-
-//    layout_alignParentEnd
