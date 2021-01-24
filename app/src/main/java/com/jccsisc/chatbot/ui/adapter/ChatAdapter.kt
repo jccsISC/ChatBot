@@ -1,10 +1,12 @@
 package com.jccsisc.chatbot.ui.adapter
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.jccsisc.chatbot.R
 import com.jccsisc.chatbot.data.model.MessageModel
 import com.jccsisc.chatbot.databinding.ItemChatBinding
 
@@ -36,7 +38,16 @@ class ChatAdapter: ListAdapter<MessageModel, ChatAdapter.ChatViewHolder>(DiffCal
     inner class ChatViewHolder(private val binding: ItemChatBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(messageModel: MessageModel) = with(binding) {
             txtMessage.text = messageModel.message
+            if (messageModel.id == 0) {
+                txtMessage.setBackgroundResource(R.drawable.background_chat)
+                txtMessage
+            }else {
+                txtMessage.setBackgroundResource(R.drawable.background_chat_bot)
+            }
             executePendingBindings()
         }
     }
 }
+
+
+//    layout_alignParentEnd
