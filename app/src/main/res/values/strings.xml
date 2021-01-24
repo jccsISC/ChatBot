@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ChatBot</string>
+    <string name="mensaje">Escribe un mensaje</string>
+    <string name="chat_vacio">No hay mensajes para mostrar</string>
+</resources>
