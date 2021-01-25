@@ -6,14 +6,13 @@
 
     </data>
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="end"
         android:padding="5dp">
 
         <TextView
             android:id="@+id/txtMessage"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:textSize="20sp"
@@ -22,7 +21,6 @@
             tools:text="Message"
             android:paddingHorizontal="8dp"
             android:paddingVertical="5dp"
-            android:layout_alignParentEnd="true"
             android:layout_marginHorizontal="10dp" />
     </RelativeLayout>
 </layout>

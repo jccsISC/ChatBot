@@ -15,8 +15,9 @@ import com.jccsisc.chatbot.viewmodel.MainViewModel
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
-    private val listChatBot = mutableListOf<MessageModel>()
     private val adapter = ChatAdapter()
+
+    private val listChatBot = mutableListOf<MessageModel>()
     private val BOT = 0
     private val USER = 1
 
@@ -26,23 +27,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.apply {
+
             rvChat.adapter = adapter
-
-            viewModel.getChat().observe(this@MainActivity, Observer {
-                adapter.submitList(it)
-
-                adapter.notifyDataSetChanged()
-                rvChat.layoutManager?.scrollToPosition(listChatBot.size - 1)
-                edtMessage.setText("")
-                edtMessage.setHintTextColor(getColor(R.color.gray))
-                viewEmpty.visibility = View.GONE
-            })
+            adapter.submitList(listChatBot)
 
             if (listChatBot.isEmpty()) viewEmpty.visibility = View.VISIBLE else viewEmpty.visibility = View.GONE
 
             imvSend.setOnClickListener {
                 val messge = edtMessage.text.toString()
                 if (messge.isNotEmpty()) {
+
+//                    viewModel.fetchChat(USER, messge)
+
                     listChatBot.add(MessageModel(USER, messge))
                     adapter.notifyDataSetChanged()
 
@@ -60,6 +56,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    suspend fun datos(user: Int, message: String) {
+        viewModel.fetchChat(user, message)
+    }
+
     fun chatBot() {
         val handler = Handler()
         handler.postDelayed(Runnable {
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun palabrasBot(): String {
-        val array = listOf("Si", "No", "Pregunta de nuevo", "Es muy probable", "No lo creo", "No sé", "Tal vez", "Por supuesto", "Claro que si")
+        val array = listOf("Si \uD83D\uDE0E", "No \uD83D\uDE12", "Pregunta de nuevo \uD83E\uDD28", "Es muy probable \uD83D\uDE01", "No lo creo \uD83E\uDD14", "No sé \uD83D\uDE13", "Tal vez \uD83D\uDE44", "Por supuesto \uD83D\uDE0F", "Claro que si \uD83E\uDD20")
         val palabra = array.random()
         return palabra
     }

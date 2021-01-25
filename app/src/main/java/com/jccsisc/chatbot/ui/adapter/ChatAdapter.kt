@@ -42,6 +42,7 @@ class ChatAdapter: ListAdapter<MessageModel, ChatAdapter.ChatViewHolder>(DiffCal
                 txtMessage.gravity = Gravity.START
             }else {
                 txtMessage.setBackgroundResource(R.drawable.background_chat_bot)
+                txtMessage.gravity = Gravity.END
             }
             executePendingBindings()
         }
