@@ -12,53 +12,35 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel: ViewModel() {
     private val BOT = 0
-    private val USER = 1
     private var _listChatBot = MutableLiveData<MutableList<MessageModel>>()
+    private var handler: Handler = Handler()
 
     val listChat: LiveData<MutableList<MessageModel>>
     get() = _listChatBot
 
     init {
-        viewModelScope.launch {
-            _listChatBot.value = fetchChat(1, "")
+        _listChatBot.value = mutableListOf()
+    }
+
+    fun addMessage(messageModel: MessageModel) {
+        val mutableList = _listChatBot.value!!
+        mutableList.add(messageModel)
+        _listChatBot.value = mutableList
+    }
+
+    fun responseBot() {
+        val runnable = Runnable {
+            val palabra = palabrasBot()
+            val messageModel = MessageModel(BOT, palabra)
+            val mutableList = _listChatBot.value!!
+            mutableList.add(messageModel)
+            _listChatBot.value = mutableList
         }
+        handler.postDelayed(runnable, 2000)
     }
-
-    suspend fun fetchChat(user: Int, message: String): MutableList<MessageModel> {
-        return withContext(Dispatchers.IO) {
-            val chatList = mutableListOf<MessageModel>()
-            chatList.add(MessageModel(user, message))
-            chatBot()
-
-            chatList
-        }
-    }
-
-    private fun chatBot() {
-        var list = mutableListOf<MessageModel>()
-        val handler = Handler()
-        handler.postDelayed(Runnable {
-            val frase = palabrasBot()
-            list.add(MessageModel(BOT, frase))
-            _listChatBot.value = list
-        }, 1000)
-    }
-
-//    fun chatBot() {
-//        val handler = Handler()
-//        handler.postDelayed(Runnable {
-//            val palabra = palabrasBot()
-//            listChatBot.add(MessageModel(BOT, palabra))
-//            //para poder manibulas los views del hilo pincipal
-//            runOnUiThread(Runnable {
-//                adapter.notifyDataSetChanged()
-//                binding.rvChat.layoutManager?.scrollToPosition(listChatBot.size - 1)
-//            })
-//        }, 2000)
-//    }
 
     fun palabrasBot(): String {
-        val array = listOf("Si", "No", "Pregunta de nuevo", "Es muy probable", "No lo creo", "No sé", "Tal vez", "Por supuesto", "Claro que si")
+    val array = listOf("Si \uD83D\uDE0E", "No \uD83D\uDE12", "Pregunta de nuevo \uD83E\uDD28", "Es muy probable \uD83D\uDE01", "No lo creo \uD83E\uDD14", "No sé \uD83D\uDE13", "Tal vez \uD83D\uDE44", "Por supuesto \uD83D\uDE0F", "Claro que si \uD83E\uDD20")
         val palabra = array.random()
         return palabra
     }

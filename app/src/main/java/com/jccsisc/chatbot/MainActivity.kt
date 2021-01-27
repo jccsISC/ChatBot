@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
     private val adapter = ChatAdapter()
 
     private val listChatBot = mutableListOf<MessageModel>()
-    private val BOT = 0
     private val USER = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,53 +28,31 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
 
             rvChat.adapter = adapter
-            adapter.submitList(listChatBot)
 
-            if (listChatBot.isEmpty()) viewEmpty.visibility = View.VISIBLE else viewEmpty.visibility = View.GONE
+            viewModel.listChat.observe(this@MainActivity, Observer {
+                adapter.submitList(it)
+                rvChat.layoutManager?.scrollToPosition(listChatBot.size - 1)
+                if (it.isEmpty()) viewEmpty.visibility = View.VISIBLE else viewEmpty.visibility = View.GONE
+            })
 
-            imvSend.setOnClickListener {
-                val messge = edtMessage.text.toString()
-                if (messge.isNotEmpty()) {
-
-//                    viewModel.fetchChat(USER, messge)
-
-                    listChatBot.add(MessageModel(USER, messge))
-                    adapter.notifyDataSetChanged()
-
-                    chatBot() //hilo secundario
-                    //retorna al ultimo elemento del recicler
-                    rvChat.layoutManager?.scrollToPosition(listChatBot.size - 1)
-                    edtMessage.setText("")
-                    edtMessage.setHintTextColor(getColor(R.color.gray))
-                    viewEmpty.visibility = View.GONE
-                } else {
-                    edtMessage.setHintTextColor(getColor(R.color.red))
-                    Toast.makeText(this@MainActivity, "Ingrese un mensaje", Toast.LENGTH_SHORT).show()
-                }
-            }
+            setUpSendMessageLayout(binding)
         }
     }
 
-    suspend fun datos(user: Int, message: String) {
-        viewModel.fetchChat(user, message)
-    }
-
-    fun chatBot() {
-        val handler = Handler()
-        handler.postDelayed(Runnable {
-            val palabra = palabrasBot()
-            listChatBot.add(MessageModel(BOT, palabra))
-            //para poder manibulas los views del hilo pincipal
-            runOnUiThread(Runnable {
-                adapter.notifyDataSetChanged()
-                binding.rvChat.layoutManager?.scrollToPosition(listChatBot.size - 1)
-            })
-        }, 2000)
-    }
-
-    fun palabrasBot(): String {
-        val array = listOf("Si \uD83D\uDE0E", "No \uD83D\uDE12", "Pregunta de nuevo \uD83E\uDD28", "Es muy probable \uD83D\uDE01", "No lo creo \uD83E\uDD14", "No sé \uD83D\uDE13", "Tal vez \uD83D\uDE44", "Por supuesto \uD83D\uDE0F", "Claro que si \uD83E\uDD20")
-        val palabra = array.random()
-        return palabra
+    private fun setUpSendMessageLayout(binding: ActivityMainBinding) = with(binding) {
+       imvSend.setOnClickListener {
+           val messge = edtMessage.text.toString()
+           if (messge.isNotEmpty()) {
+               val messageModel = MessageModel(USER, messge)
+               viewModel.addMessage(messageModel)
+               viewModel.responseBot()
+               edtMessage.setText("")
+               edtMessage.setHintTextColor(getColor(R.color.gray))
+               viewEmpty.visibility = View.GONE
+           } else {
+               edtMessage.setHintTextColor(getColor(R.color.red))
+               Toast.makeText(this@MainActivity, "Ingrese un mensaje \uD83D\uDE12", Toast.LENGTH_SHORT).show()
+           }
+       }
     }
 }
