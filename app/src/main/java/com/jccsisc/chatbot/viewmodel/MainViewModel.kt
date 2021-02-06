@@ -10,13 +10,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
     private val BOT = 0
     private var _listChatBot = MutableLiveData<MutableList<MessageModel>>()
     private var handler: Handler = Handler()
 
     val listChat: LiveData<MutableList<MessageModel>>
-    get() = _listChatBot
+        get() = _listChatBot
 
     init {
         _listChatBot.value = mutableListOf()
@@ -40,7 +40,10 @@ class MainViewModel: ViewModel() {
     }
 
     fun palabrasBot(): String {
-    val array = listOf("Si \uD83D\uDE0E", "No \uD83D\uDE12", "Pregunta de nuevo \uD83E\uDD28", "Es muy probable \uD83D\uDE01", "No lo creo \uD83E\uDD14", "No sé \uD83D\uDE13", "Tal vez \uD83D\uDE44", "Por supuesto \uD83D\uDE0F", "Claro que si \uD83E\uDD20")
+        val array = listOf("Si \uD83D\uDE0E", "No \uD83D\uDE12", "Pregunta de nuevo \uD83E\uDD28",
+                "Es muy probable \uD83D\uDE01", "No lo creo \uD83E\uDD14", "No sé \uD83D\uDE13",
+                "Tal vez \uD83D\uDE44", "Por supuesto \uD83D\uDE0F", "Claro que si \uD83E\uDD20",
+                )
         val palabra = array.random()
         return palabra
     }

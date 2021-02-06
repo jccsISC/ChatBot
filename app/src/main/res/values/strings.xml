@@ -2,4 +2,9 @@
     <string name="app_name">ChatBot</string>
     <string name="mensaje">Escribe un mensaje</string>
     <string name="chat_vacio">No hay mensajes para mostrar</string>
+    <string name="texto">
+        <h1>Título</h1>
+        Es un texto con etiquiteas <b>HTML</b> solo para mostras la compatibilidad de <i>estas etiquetas</i>
+        y seguimos ingresando cosas, doto se puede 😎
+    </string>
 </resources>
